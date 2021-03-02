@@ -29,7 +29,7 @@ defmodule Tmate.MasterApi do
   def get_named_session_prefix(api_key) do
     case get("/named_session_prefix", [], params: %{api_key: api_key}) do
       {:ok, result} ->
-        {:ok, result["prefix"]}
+        {:ok, Jason.decode!(result)["prefix"]}
       {:error, 404} ->
         {:error, :not_found}
       {:error, reason} ->
