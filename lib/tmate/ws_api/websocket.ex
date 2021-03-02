@@ -26,6 +26,9 @@ defmodule Tmate.WsApi.WebSocket do
               :ok ->
                 ip = case req do
                   %{proxy_header: %{src_address: ip}} -> ip
+                  %{headers: %{"x-real-ip" => ipstring}} ->
+                    {_, ip} = :inet.parse_address(ipstring |> to_charlist)
+                    ip
                   %{peer: {ip, _port}} -> ip
                 end
                 ip = :inet_parse.ntoa(ip) |> to_string
